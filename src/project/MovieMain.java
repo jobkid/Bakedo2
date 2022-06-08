@@ -159,7 +159,7 @@ class Manager{
 			bw.write(System.currentTimeMillis()+", "+movie+", "+genre+", "+age);
 			bw.newLine();
 			//System.out.println();
-			System.out.println();
+			
 			
 			i--;
 			
