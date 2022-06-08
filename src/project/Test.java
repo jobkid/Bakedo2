@@ -21,6 +21,7 @@ public class Test {
 		
 		//String data=" ";
 		
+		System.out.println();
 		String data;
 		while((data=br1.readLine())!=null)
 		{
