@@ -20,9 +20,7 @@ public class Test {
 		BufferedReader br1 = new BufferedReader(fr1);
 		
 		//String data=" ";
-		int a=5;
-		
-		System.out.println();
+	
 		String data;
 		while((data=br1.readLine())!=null)
 		{
