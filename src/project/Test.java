@@ -20,10 +20,7 @@ public class Test {
 		BufferedReader br1 = new BufferedReader(fr1);
 		
 		//String data=" ";
-		int a=5;
-		
-		System.out.println();
-		System.out.println("гоюл©Д!");
+	
 		String data;
 		while((data=br1.readLine())!=null)
 		{
