@@ -28,13 +28,6 @@ public class MovieMain {
 		*/
 		
 		Manager admin = new Manager();
-		/*
-		admin.getMovie();
-		System.out.println("=================");
-		admin.movieList();
-		System.out.println("================");
-		admin.addMovie();
-		*/
 		
 		admin.managerMenu();
 	}
@@ -166,7 +159,7 @@ class Manager{
 			bw.write(System.currentTimeMillis()+", "+movie+", "+genre+", "+age);
 			bw.newLine();
 			//System.out.println();
-			
+			System.out.println();
 			
 			i--;
 			
