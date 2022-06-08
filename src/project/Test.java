@@ -22,6 +22,7 @@ public class Test {
 		//String data=" ";
 		int a=5;
 		
+		System.out.println();
 		String data;
 		while((data=br1.readLine())!=null)
 		{
