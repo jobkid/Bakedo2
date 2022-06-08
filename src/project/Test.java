@@ -22,6 +22,7 @@ public class Test {
 		//String data=" ";
 		
 		System.out.println();
+		System.out.println("гоюл©Д!");
 		String data;
 		while((data=br1.readLine())!=null)
 		{
