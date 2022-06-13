@@ -10,104 +10,145 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 
-
-
 public class MovieMain {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
+	
+	login();
+	}
+	
+	static void login() throws IOException
+	{
 		
-		Manager admin = new Manager();
-		//admin.managerMenu();
-		admin.managerMenu();
+		System.out.println("Á¢¼ÓÇÏ¼Ì½À´Ï´Ù. °ü¸®ÀÚ [1], ÀÌ¿ëÀÚ [2], ÀüÃ¼Á¾·á [3]");
+		Scanner sc = new Scanner(System.in);
+		boolean access=true;
+		
+		int number=sc.nextInt();
+		
+		while(access)
+		{
+			if(number==1)
+			{
+				Manager admin = new Manager();
+				admin.login();
+				break;
+			}
+			else if(number==2)
+			{
+				Member member = new Member();
+				member.login();
+					
+			}
+			else if(number==3)
+			{
+				System.out.println("ÀüÃ¼ Á¾·áÇÕ´Ï´Ù.");
+				break;
+			}
+		}
 	}
 
 }
 
-class Manager extends AbstractMenu{
+class Manager extends AbstractMenu
+{
+	private String adminid="admin";
+	private String password="1234";
+	boolean admint = true;
 	
-	File movies=new File("src/project/movies.txt");
-	File theaterseat=new File("src/project/theaterseats");
+	File fileName=new File("src/project/movies.txt");
+	File theaterseat=new File("src/project/theaterseat.txt");
+	Scanner sc=new Scanner(System.in);
 	String dataStr;
+	
 	Manager(){
 		
 	}
+	
 	void managerMenu() throws IOException
 	{
-		System.out.println("ê´€ë¦¬ì ë©”ë‰´ì…ë‹ˆë‹¤. [1] ì˜í™” ë“±ë¡ [2] ì˜í™” ì¶”ê°€ [3] ì˜í™” ëª©ë¡ [4] ì˜í™” ì‚­ì œ [5] ì „ì²´ ì‚­ì œ [6] ì¢Œì„ ì„¤ì • [7] ë©”ë‰´ë¡œ ëŒì•„ê°€ê¸° [0] ì „ì²´ì¢…ë£Œ");
+		System.out.println("°ü¸®ÀÚ ¸Ş´ºÀÔ´Ï´Ù. [1]·Î±×ÀÎ [2]¿µÈ­ µî·Ï [3]¿µÈ­ Ãß°¡ [4]¿µÈ­ ¸ñ·Ï [5]¿µÈ­ »èÁ¦ [6]ÀüÃ¼ »èÁ¦ [7] ÁÂ¼® ¼³Á¤ [8] ¸Ş´º·Î µ¹¾Æ°¡±â [0] Á¾·á");
 		Scanner sc=new Scanner(System.in);
-		int num=sc.nextInt();
-		
-		switch(num)
+		int number=sc.nextInt();
+		switch(number)
 		{
-		case 1: getMovie();
+		case 1: login();
 		break;
 		
-		case 2: addMovie();
+		case 2: getMovie();
 		break;
 		
-		case 3: seeList();
+		case 3: addMovie();
 		break;
 		
-		case 4: delMovie();
+		case 4: seeList();
 		break;
 		
-		case 5: delAll();
+		case 5: delMovie();
 		break;
 		
-		case 6: getSeat();
-		
-		case 7:managerMenu();
+		case 6: delAll();
 		break;
 		
-		case 0:
+		case 7: getSeat();
 		break;
+		
+		case 8: managerMenu();
+		break;
+		
+		case 0:{
+			System.out.println("Á¾·áÇÕ´Ï´Ù.");
+			break;	
+		}
+		
+		
 		}
 		
 	}
 	
-	void setMovie() throws IOException{
+	private void setMovie() throws IOException{
 		
-		FileWriter fwMovie = new FileWriter(movies);
-		BufferedWriter bwMovie = new BufferedWriter(fwMovie);
+		FileWriter movie = new FileWriter(fileName);
+		BufferedWriter bw = new BufferedWriter(movie);
 		
 		int i=5;
 		while (i>0){
-			System.out.println("ì˜í™” ì œëª©, ì¥ë¥´, ì—°ë ¹ëŒ€ë¥¼ 5ë²ˆ ì‘ì„±í•´ì£¼ì„¸ìš”. í˜„ì¬ "+i+"ë²ˆ ë‚¨ì•˜ìŠµë‹ˆë‹¤. ì‘ì„±ì€ '1' ì¢…ë£ŒëŠ” '0'");
+			System.out.println("¿µÈ­ Á¦¸ñ, Àå¸£, ¿¬·É´ë¸¦ 5¹ø ÀÛ¼ºÇØÁÖ¼¼¿ä. ÇöÀç "+i+"¹ø ³²¾Ò½À´Ï´Ù. ÀÛ¼ºÀº '1' Á¾·á´Â '0'");
 			
 			Scanner sc = new Scanner(System.in);
 			int tmp=sc.nextInt();
 			if(tmp==1)
-			{			
+			{
 				Scanner moviesc = new Scanner(System.in);
 				
-				System.out.print("ì˜í™”ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤.");
+				System.out.print("¿µÈ­¸¦ µî·ÏÇÕ´Ï´Ù.");
 				String title=moviesc.nextLine();
 				
-				System.out.print("ì¥ë¥´ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+				System.out.print("Àå¸£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
 				String genre=moviesc.nextLine();
 				
-				System.out.print("ì—°ë ¹ëŒ€ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+				System.out.print("¿¬·É´ë¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
 				String age=moviesc.nextLine();
 			
 				System.out.println("========================================");
 				
-				
-				bwMovie.write(System.currentTimeMillis()+", "+title+", "+genre+", "+age);
-				bwMovie.newLine();
+				bw.write(System.currentTimeMillis()+", "+title+", "+genre+", "+age);
+				bw.newLine();
 			}
 			else if(tmp==0)
 			{
-				System.out.println("ì˜í™”ë“±ë¡ì´ ì·¨ì†Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+				System.out.println("¿µÈ­µî·ÏÀÌ Ãë¼ÒµÇ¾ú½À´Ï´Ù.");
 			}
 			i--;
 		}
-		bwMovie.close();
-		fwMovie.close();
+		bw.close();
+		movie.close();
 		
-		System.out.println("ì˜í™” ë“±ë¡ ì¢…ë£Œ");
+		System.out.println("¿µÈ­ µî·Ï Á¾·á\n==================");
 		managerMenu();
-		System.out.println("==========================================================");
+		
+
 	}
 	
 	void getMovie() throws IOException
@@ -119,17 +160,15 @@ class Manager extends AbstractMenu{
 	{
 		try
 		{
-			FileReader fr=new FileReader(movies);
+			FileReader fr=new FileReader(fileName);
 			
 			int data=0;
 			while((data=fr.read())!=-1)
-			{
 				System.out.print((char)data);
-			}
-			fr.close();
+				fr.close();
 		}catch(FileNotFoundException e) {e.printStackTrace();}
 		
-		System.out.println("==========================================================");
+		System.out.println("¿µÈ­ ¸ñ·Ï º¸±â Á¾·á\n============================");
 		managerMenu();
 	}
 	
@@ -137,115 +176,119 @@ class Manager extends AbstractMenu{
 	{
 		int data=0;
 //		movieList();
+		File fileName = new File("src/project/movies.txt");
 		System.out.println("===================");
-		System.out.println("ì˜í™”ë¥¼ ì¶”ê°€í•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
+		System.out.println("¿µÈ­¸¦ Ãß°¡ÇÏ½Ã°Ú½À´Ï±î?");
 		
-		FileReader frMovie=new FileReader(movies);
-		BufferedReader brMovie=new BufferedReader(frMovie);
+		//String fileName="src/project/movie.txt";
+		FileReader fr=new FileReader(fileName);
+		BufferedReader br=new BufferedReader(fr);
 		
-		FileWriter fwMovie=new FileWriter(movies, true);
-		BufferedWriter bwMovie=new BufferedWriter(fwMovie);
+		FileWriter fw=new FileWriter(fileName, true);
+		BufferedWriter bw=new BufferedWriter(fw);
 		int i=2;
 		while(i>0)
 		{	
 			Scanner sc=new Scanner(System.in);
 			
-			System.out.print("ì˜í™”ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤.");
+			System.out.print("¿µÈ­¸¦ µî·ÏÇÕ´Ï´Ù.");
 			String movie=sc.nextLine();
 			
-			System.out.print("ì¥ë¥´ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+			System.out.print("Àå¸£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
 			String genre=sc.nextLine();
 			
-			System.out.print("ì—°ë ¹ëŒ€ë¥¼ ì…ë ¥í•©ë‹ˆë‹¤.");
+			System.out.print("¿¬·É´ë¸¦ ÀÔ·ÂÇÕ´Ï´Ù.");
 			String age=sc.nextLine();
 			
-			bwMovie.write(System.currentTimeMillis()+", "+movie+", "+genre+", "+age);
-			bwMovie.newLine();
+			bw.write(System.currentTimeMillis()+", "+movie+", "+genre+", "+age);
+			bw.newLine();
 			//System.out.println();
 			
 			
 			i--;
 			
 		}
-		bwMovie.close();
-		fwMovie.close();
-		System.out.println("ì˜í™”ë¥¼ ì¶”ê°€í–ˆìŠµë‹ˆë‹¤.");
+		bw.close();
+		fw.close();
+		
+		System.out.println("¿µÈ­ Ãß°¡ Á¾·á\n===========================");
 		managerMenu();
-		System.out.println("==========================================================");
 	}
 	
 	void delMovie() throws IOException
 	{
-		System.out.println("ì‚­ì œí•  ì˜í™”ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”.\n===================");
-		
+		System.out.println("»èÁ¦ÇÒ ¿µÈ­¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä.\n================");
 		ArrayList<String> movielists=new ArrayList<String>();
-		FileReader frMovie = new FileReader(movies);
-		BufferedReader brMovie = new BufferedReader(frMovie);
 		
-		int index=0;
+		FileReader fr=new FileReader(fileName);
+		BufferedReader br=new BufferedReader(fr);
+		
+		int j=0;
 		int num=1;
-		
-		while((dataStr=brMovie.readLine())!=null)
-		{
+		while((dataStr=br.readLine())!=null)
+		{	
+			
 			movielists.add(dataStr);
-			System.out.println("["+(num++)+"]ë²ˆ "+movielists.get(index++));
+			
+			System.out.println("["+(num++)+"]"+"¹ø "+movielists.get(j++));
+			
 		}
 		
-		System.out.println(movielists.size());
-		
-		System.out.println("ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.\n==================");
-		
+		System.out.println("¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.\n===========");
+	
 		Scanner sc=new Scanner(System.in);
-		int movnum=sc.nextInt();
+		int movenum=sc.nextInt();
 		
-		movielists.remove(movnum-1);
 		
-		FileWriter fwMovie = new FileWriter(movies);
-		BufferedWriter bwMovie = new BufferedWriter(fwMovie);
+		
+		movielists.remove(movenum-1);
+		
+		FileWriter fw=new FileWriter(fileName);
+		BufferedWriter bw=new BufferedWriter(fw);
 		
 		for(int i=0; i<movielists.size(); i++)
 		{
-			if(movies.canWrite())
+			if(fileName.canWrite())
 			{
-				bwMovie.write(movielists.get(i));
-				bwMovie.newLine();
+				bw.write(movielists.get(i));
+				bw.newLine();
 			}
 		}
-		bwMovie.flush();
-		bwMovie.close();
-		fwMovie.close();
-		System.out.println("ì˜í™” ì‚­ì œ ì¢…ë£Œ\n===================================");
+		bw.flush();
+		bw.close();
+		fw.close();
+		System.out.println("¿µÈ­ »èÁ¦ Á¾·á\n================================");
 		managerMenu();
+		
 	}
 	
 	void delAll() throws IOException
-	{	
-		//this.movies=movies;
-		movies.delete();
-		System.out.println("=====================");
+	{
+		fileName.delete();
 		managerMenu();
 	}
 	
-	void getSeat() throws IOException
+	void getSeat()throws IOException
 	{
 		setSeat();
 	}
 	
 	private void setSeat() throws IOException
-	{	//2ì°¨ ë°°ì—´ë¡œ ê·¹ì¥ ì¢Œì„ì„ ë§Œë“ ë‹¤. í–‰ì€ ì•ŒíŒŒë²³ ì—´ì€ ìˆ«ìë¡œ ë§Œë“ ë‹¤.
-		System.out.println("ì¢Œì„ì˜ í–‰ê³¼ ì—´ì„ ì§€ì •í•´ì£¼ì„¸ìš”.");
-
+	{
+		//2ÀÚ ¹è¿­·Î ±ØÀå ÁÂ¼®À» ¸¸µç´Ù. ÇàÀº ¾ËÆÄ¸ä, ¿­Àº ¼ıÀÚ·Î ¸¸µç´Ù.
+		System.out.println("ÁÂ¼®ÀÇ Çà°ú ¿­À» ÁöÁ¤ÇØÁÖ¼¼¿ä.");
 		char seatrow=' ';
 		int sum=1;
-		Scanner sc=new Scanner(System.in);
+		String str=null;
+		Scanner sc = new Scanner(System.in);
 		
 		int row=sc.nextInt();
 		int column=sc.nextInt();
 		
 		int[][] seat=new int[row][column];
 		
-		FileWriter fwTheater=new FileWriter(theaterseat);
-		BufferedWriter bwTheater = new BufferedWriter(fwTheater);
+		FileWriter fw = new FileWriter(theaterseat);
+		BufferedWriter bw = new BufferedWriter(fw);
 		
 		for(int i=0; i<seat.length; i++)
 		{
@@ -255,55 +298,98 @@ class Manager extends AbstractMenu{
 				seat[i][j]=sum+j;
 			}
 			seatrow=(char)(i+65);
-			System.out.println(seatrow+Arrays.toString(seat[i]));
-			bwTheater.write(seatrow+Arrays.toString(seat[i]));
-			bwTheater.newLine();
+			//seat[i]=(char)(i+65);
+			str=seatrow+Arrays.toString(seat[i]);
+			System.out.println(str);
+			
+			bw.write(seatrow+Arrays.toString(seat[i]));
+			bw.newLine();
+			
 		}
-		bwTheater.close();
-		fwTheater.close();	
+		bw.close();
+		fw.close();
+		
+		managerMenu();
+		
 	}
 	public void login()
 	{
-		
+
+			while(admint)
+			{
+				System.out.println("°ü¸®ÀÚ ·Î±×ÀÎ È­¸éÀÔ´Ï´Ù.");
+				System.out.println("°ü¸®ÀÚ ID¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä ");
+				String inputId=sc.nextLine();
+				System.out.println("=======================================");
+				System.out.println("°ü¸®ÀÚ ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+				String inputPass=sc.nextLine();
+				System.out.println("=======================================");
+				
+				System.out.println("Á¾·á¸¦ ¿øÇÏ½Ã¸é 0¿ï ´­·¯ÁÖ½Ã°í ±×´ë·Î ÁøÇàÀº 1À» ´­·¯ÁÖ¼¼¿ä.");
+				int ending = sc.nextInt();
+				if(inputId.equals(adminid)&&inputPass.equals(password)&&ending==1)
+				{
+					System.out.println("Á¢¼ÓµÇ¾ú½À´Ï´Ù.");
+					try
+					{
+						managerMenu();
+					} catch (IOException e)
+					{
+						
+						e.printStackTrace();
+					}
+					
+				}
+				else if(ending==0)
+				{
+					admint=false;
+				}
+				else
+				{
+					System.out.println("id¿Í ºñ¹Ğ¹øÈ£¸¦ Àß¸øÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
+				}
+				break;
+			}
 	}
 	
 }
 
-class Member extends AbstractMenu{
-	private String filename = "src/project/reservation.txt";
-	File filereservation = new File(filename);
+class Member extends AbstractMenu
+{
+	String filename="src/project/reservation.txt";
+	String logindata="src/project/logindata.txt";
 	
-	FileReader frreserve = new FileReader(filereservation);
-	BufferedReader brreserve = new BufferedReader(frreserve);
+	File filereservation=new File(filename);
+	File filelogindata = new File(logindata);
+	
 	ArrayList<String> reservation = new ArrayList<String>();
+	
 	String data=null;
 	Scanner sc = new Scanner(System.in);
 	
 	Member()throws IOException
 	{
-		File filereservation = new File(filename);
-		FileReader frreader = new FileReader(filereservation);
-		BufferedReader brreader = new BufferedReader(frreader);
+		
 	}
 	
 	void memberMenu() throws IOException
 	{
-		System.out.println("ë©”ë‰´ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”. [1] ì˜í™”ì˜ˆë§¤ [2] ì˜ˆë§¤ í˜„í™© [3] ì˜í™” ì‚­ì œ [4] ë©”ë‰´ë¡œ ëŒì•„ê°€ê¸° [0] ì „ì²´ì¢…ë£Œ");
-		int selectnum=sc.nextInt();
-		switch(selectnum)
+		System.out.println("¸Ş´º¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä. [1] ¿µÈ­¿¹¸Å [2] ¿¹¸Å ÇöÈ² [3] ¿µÈ­ »èÁ¦ [4] ¸Ş´º·Î µ¹¾Æ°¡±â [0] ÀüÃ¼Á¾·á");
+		int menunumber=sc.nextInt();
+		switch(menunumber)
 		{
-		case 1:{
+		case 1:
+		{
 			getReservation();
 			break;
 		}
-		case 2:{
+		case 2:
+		{
 			seeReservation();
-			break;
 		}
 		case 3:
 		{
 			delReservation();
-			break;
 		}
 		case 4:
 		{
@@ -318,14 +404,12 @@ class Member extends AbstractMenu{
 	
 	private void setReservation() throws IOException
 	{
-		try
-		{
+		try {
 			File movies = new File("src/project/movies.txt");
 			FileReader frmovies = new FileReader(movies);
 			BufferedReader brmovies = new BufferedReader(frmovies);
 			String str=null;
-			ArrayList<String> moviearrays=new ArrayList<String>();
-			String data=null;
+			ArrayList<String> moviearrays = new ArrayList<String>();
 			
 			while((data=brmovies.readLine())!=null)
 			{
@@ -334,136 +418,244 @@ class Member extends AbstractMenu{
 			
 			FileWriter fwreserve = new FileWriter(filereservation);
 			BufferedWriter bwreserve = new BufferedWriter(fwreserve);
-			int j=0;
 			int i=0;
+			int j=0;
 			
 			do
 			{
-				System.out.println("ì˜í™”ë¥¼ ì˜ˆë§¤í•˜ì‹œê² ìŠµë‹ˆê¹Œ? [1] ì˜ˆë§¤ [2] ì·¨ì†Œ");
+				System.out.println("¿µÈ­¸¦ ¿¹¸ÅÇÏ½Ã°Ú½À´Ï±î? [1] ¿¹¸Å [2] Ãë¼Ò");
 				System.out.println("===================================");
 				
 				int selection = sc.nextInt();
 				if(selection==1)
 				{
-					System.out.println("ì¥ì†Œë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”. ë„ì–´ì“°ê¸°ëŠ” í•˜ì§€ ë§ì•„ì£¼ì„¸ìš”.");
+					System.out.println("Àå¼Ò¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä. ¶ç¾î¾²±â´Â ÇÏÁö ¸»¾ÆÁÖ¼¼¿ä.");
 					String place=sc.next();
 					
 					for(i=0; i<moviearrays.size(); i++)
 					{
-						System.out.println("["+(i+1)+"ë²ˆ]"+moviearrays.get(i));
+						System.out.println("["+(i+1)+"¹ø]"+moviearrays.get(i));
 					}
 					int purchase=sc.nextInt();
 					String movienum=moviearrays.get(purchase-1);
-					System.out.println("["+purchase+"ë²ˆ] ì˜í™”ë¥¼ ì„ íƒí–ˆìŠµë‹ˆë‹¤.\n=========================");
+					System.out.println("["+purchase+"¹ø]"+"¿µÈ­¸¦ ¼±ÅÃÇß½À´Ï´Ù.");
 					
-					File fileseats = new File("src/project/seats.txt");
+					File fileseats = new File("src/project/theaterseat.txt");
 					FileReader frseats = new FileReader(fileseats);
 					BufferedReader brseats = new BufferedReader(frseats);
-					ArrayList<String> seatarrays = new ArrayList<String>();
+					ArrayList<String>seatarrays = new ArrayList<String>();
 					
-					while((str=brseats.readLine())!=null)
+					while((data=brseats.readLine())!=null)
 					{
-						seatarrays.add(str);
-						System.out.println(str);
+						seatarrays.add(data);
+						System.out.println(data);
 					}
-					System.out.println("==========================");
-					System.out.println("ì˜í™” ì¢Œì„ì„ ì„ íƒí•´ì£¼ì„¸ìš”.");
-					System.out.println("ì›í•˜ëŠ” ì¢Œì„ í–‰ì„ ì„ íƒí•´ì£¼ì„¸ìš”. A-Z ìˆœìœ¼ë¡œ ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+					System.out.println("====================================");
+					System.out.println("¿µÈ­ ÁÂ¼®À» ¼±ÅÃÇØÁÖ¼¼¿ä.");
+					System.out.println("¿øÇÏ´Â ÁÂ¼® ÇàÀ» ¼±ÅÃÇØÁÖ¼¼¿ä. A-Z ¼øÀ¸·Î ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä. ex) A=1, B=2, C=3");
 					
 					int row=sc.nextInt();
-					String row2=seatarrays.get(row-1);
-					char alphabet=row2.charAt(0);
-					System.out.println(alphabet+"í–‰ì„ ì„ íƒí•˜ì…¨ìŠµë‹ˆë‹¤.");
-					System.out.println("ì›í•˜ì‹œëŠ” ì—´ì„ ì„ íƒí•´ì£¼ì„¸ìš”.");
+					String row2 = moviearrays.get(row-1);
 					
-					int column=sc.nextInt();
-					char column2=row2.charAt(3*column-1);
+					char alphabet = row2.charAt(0);
+					System.out.println(alphabet+"ÇàÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.");
+					System.out.println("====================================");
+					System.out.println("¿øÇÏ½Ã´Â ¿­À» ¼±ÅÃÇØÁÖ¼¼¿ä.");
+					
+					int column = sc.nextInt();
+					char column2 = row2.charAt(column*3-1);
 					String seatnumber=alphabet+"-"+column2;
 					
 					bwreserve.write(place+", "+System.currentTimeMillis()+", "+row2+", "+seatnumber);
 					bwreserve.newLine();
-					System.out.println("ì˜í™”ì˜ˆë§¤ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.");
+					System.out.println("¿µÈ­¿¹¸Å¸¦ Á¾·áÇÕ´Ï´Ù.");
 				}
 				else if(selection==2)
 				{
-					System.out.println("ì˜í™” ì˜ˆë§¤ë¥¼ ì·¨ì†Œí–ˆìŠµë‹ˆë‹¤.");
+					System.out.println("¿µÈ­¿¹¸Å¸¦ Ãë¼ÒÇß½À´Ï´Ù.");
 					break;
 				}
-				
 			}while((j++)<moviearrays.size());
 			bwreserve.close();
 			fwreserve.close();
-			System.out.println("ì˜í™”ì˜ˆë§¤ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.");
+			System.out.println("¿µÈ­ ¿¹¸Å¸¦ Á¾·áÇÕ´Ï´Ù.");
+			
 		}catch(FileNotFoundException e)
 		{
-			System.out.println("íŒŒì¼ì„ ì°¾ì„ ìˆ˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
+			System.out.println("ÆÄÀÏÀ» Ã£À» ¼ö°¡ ¾ø½À´Ï´Ù.");
 		}
 		catch(IndexOutOfBoundsException e)
 		{
-			System.out.println("ë²”ìœ„ë¥¼ ì´ˆê³¼í–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹¤í–‰í•´ì£¼ì„¸ìš”.");
+			System.out.println("¹üÀ§¸¦ ÃÊ°úÇß½À´Ï´Ù. ´Ù½Ã ½ÇÇàÇØÁÖ¼¼¿ä.");
 		}
 		catch(IOException e)
 		{
 			
 		}
 		memberMenu();
+		
 	}
-	
 	void getReservation() throws IOException
 	{
 		setReservation();
-		memberMenu();
 	}
 	
 	void delReservation() throws IOException
 	{
 		int i=0;
-		System.out.println("ì·¨ì†Œí•  ì˜í™”ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”.\n=================");
-		
-		while((data=brreserve.readLine())!=null)
-		{
-			System.out.println("["+(++i)+"]"+data);
-			reservation.add(data);
-		}
-		
-		int delnumber=sc.nextInt();
-		reservation.remove(delnumber-1);
-		System.out.println("ì˜í™”ë¥¼ ì‚­ì œí–ˆìŠµë‹ˆë‹¤.");
-		
-		
-		FileWriter fwreserve = new FileWriter(filereservation);
-		BufferedWriter bwreserve = new BufferedWriter(fwreserve);
-		
-		while(filereservation.canWrite())
-		{
-			for(i=0; i<reservation.size(); i++) {
-				bwreserve.write(reservation.get(i));
-				bwreserve.newLine();
+		System.out.println("Ãë¼ÒÇÒ ¿µÈ­¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä.\n===================");
+	
+		FileReader frreserve = new FileReader(filereservation);
+		BufferedReader brreserve = new BufferedReader(frreserve);
+		try {
+			while((data=brreserve.readLine())!=null)
+			{
+				System.out.println("["+(++i)+"]"+data);
+				reservation.add(data);
 			}
-			break;
+			
+			int delnumber=sc.nextInt();
+			reservation.remove(delnumber-1);
+			System.out.println("¿µÈ­¸¦ »èÁ¦Çß½À´Ï´Ù.");
+			
+			FileWriter fwreserve = new FileWriter(filereservation);
+			BufferedWriter bwreserve = new BufferedWriter(fwreserve);
+			
+			while(filereservation.canWrite())
+			{
+				for(i=0; i<reservation.size(); i++)
+				{
+					bwreserve.write(reservation.get(i));
+					bwreserve.newLine();
+				}
+				break;
+			}
+			bwreserve.close();
+			fwreserve.close();
+			
+			System.out.println("»èÁ¦ ÈÄ »õ·Î¿î ¿µÈ­ ÆÄÀÏ ¿Ï¼º");
+			memberMenu();
+		}catch(FileNotFoundException e)
+		{
+			System.out.println("¿¹¸Å ÆÄÀÏÀ» Ã£À» ¼ö°¡ ¾ø½À´Ï´Ù.");
 		}
-		bwreserve.close();
-		fwreserve.close();
-		
-		System.out.println("ì‚­ì œ í›„ ìƒˆë¡œìš´ ì˜í™” íŒŒì¼ ì™„ì„±");
-		memberMenu();
+		catch(IOException e)
+		{
+			
+		}
+	
 	}
 	
 	void seeReservation() throws IOException
 	{
-		while((data=brreserve.readLine())!=null)
+		FileReader frreserve = new FileReader(filereservation);
+		BufferedReader brreserve = new BufferedReader(frreserve);
+		try {
+			while((data=brreserve.readLine())!=null){
+				System.out.println(data);
+			}
+			System.out.println("================================");
+			memberMenu();
+		}catch(IOException e)
 		{
-			System.out.println(data);
+			System.out.println("ÆÄÀÏÀ» Ã£À» ¼ö°¡ ¾ø½À´Ï´Ù.");
 		}
-		System.out.println("=============================");
-		memberMenu();
 	}
 	
 	public void login()
 	{
+		int yn;
+		String mname=null;
+		String mpass=null;
+		boolean tf=true;
+		String buf=null;
+		String[] member= {};
+		try {
+			FileWriter fwlogindata = new FileWriter(filelogindata);
+			BufferedWriter bwlogindata = new BufferedWriter(fwlogindata);
+			
+			System.out.println("ºñÈ¸¿øÀÌ¸é [1] È¸¿øÀÌ¸é [2]¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			yn=sc.nextInt();
+			
+				if(yn==1)
+				{
+					System.out.println("È¸¿ø°¡ÀÔÀ» ÁøÇàÇÕ´Ï´Ù.");
+						
+					
+					System.out.println("È¸¿øÁ¤º¸¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+					System.out.println("ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+					mname=sc.next();
+							
+					System.out.println("ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+					mpass=sc.next();
+							
+					String information = mname+", "+mpass+", ";
+					bwlogindata.write(information);
+					bwlogindata.newLine();
+							
+					bwlogindata.close();
+					fwlogindata.close();
+						
+				}
+				else if(yn==2)
+					{
+						System.out.println("=====·Î±×ÀÎ È­¸éÀ¸·Î ÀÌµ¿ÇÕ´Ï´Ù.=====");
+						FileReader frlogindata = new FileReader(filelogindata);
+						BufferedReader brlogindata = new BufferedReader(frlogindata);
+						
+						while((buf=brlogindata.readLine())!=null)
+						{
+							member=buf.split(", ");
+								
+							if(mname.equals(member[0])&&mpass.equals(member[2]))
+							{
+								System.out.println("\n"+"¢¾¢¾¢¾"+mname+"´Ô È¯¿µÃd´Ï´Ù."+"¢¾¢¾¢¾");
+								tf=false;
+							}
+							if(tf!=false)
+							{
+								System.out.println("È¸¿ø Á¤º¸°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+							}
+						}
+										
+					
+						
+						System.out.println("¸Ş´º·Î ÀÌµ¿ÇÕ´Ï´Ù.");
+						memberMenu();
+					}
+							
+				else
+				{
+					System.out.println("Á¤È®ÇÑ ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+				}
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
+	static String register()
+	{
+		String name;
+		String phone;
+		String password;
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä");
+		name = sc.next();
+		
+		System.out.println("ÀüÈ­¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä(-Á¦¿Ü)");
+		phone = sc.nextLine();
+		
+		System.out.println("ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.(¼ıÀÚ¸¸)");
+		password = sc.nextLine();
+		
+		return name+" "+ " "+phone+" "+"\n";
+		
+		
+	}
 	
 }
 
@@ -472,7 +664,5 @@ interface Menu{
 }
 
 abstract class AbstractMenu implements Menu{
-	public abstract void login();
-	
-//	
+	public abstract void login ();
 }
