@@ -33,7 +33,7 @@ public class MovieMain {
 			{
 				Manager admin = new Manager();
 				admin.login();
-				break;
+				
 			}
 			else if(number==2)
 			{
@@ -277,7 +277,7 @@ class Manager extends AbstractMenu
 	{
 		//2자 배열로 극장 좌석을 만든다. 행은 알파멧, 열은 숫자로 만든다.
 		System.out.println("좌석의 행과 열을 지정해주세요.");
-		char seatrow=' ';
+		char seatrow;
 		int sum=1;
 		String str=null;
 		Scanner sc = new Scanner(System.in);
@@ -298,7 +298,6 @@ class Manager extends AbstractMenu
 				seat[i][j]=sum+j;
 			}
 			seatrow=(char)(i+65);
-			//seat[i]=(char)(i+65);
 			str=seatrow+Arrays.toString(seat[i]);
 			System.out.println(str);
 			
@@ -358,9 +357,13 @@ class Member extends AbstractMenu
 {
 	String filename="src/project/reservation.txt";
 	String logindata="src/project/logindata.txt";
+	String seatfile="src/project/theaterseat.txt";
 	
 	File filereservation=new File(filename);
 	File filelogindata = new File(logindata);
+	File fileseat = new File(seatfile);
+	
+	char movieseat[];
 	
 	ArrayList<String> reservation = new ArrayList<String>();
 	
@@ -429,7 +432,7 @@ class Member extends AbstractMenu
 				int selection = sc.nextInt();
 				if(selection==1)
 				{
-					System.out.println("장소를 선택해주세요. 띄어쓰기는 하지 말아주세요.");
+					System.out.print("장소를 선택해주세요. 띄어쓰기는 하지 말아주세요.");
 					String place=sc.next();
 					
 					for(i=0; i<moviearrays.size(); i++)
@@ -440,8 +443,8 @@ class Member extends AbstractMenu
 					String movienum=moviearrays.get(purchase-1);
 					System.out.println("["+purchase+"번]"+"영화를 선택했습니다.");
 					
-					File fileseats = new File("src/project/theaterseat.txt");
-					FileReader frseats = new FileReader(fileseats);
+					
+					FileReader frseats = new FileReader(fileseat);
 					BufferedReader brseats = new BufferedReader(frseats);
 					ArrayList<String>seatarrays = new ArrayList<String>();
 					
@@ -451,11 +454,11 @@ class Member extends AbstractMenu
 						System.out.println(data);
 					}
 					System.out.println("====================================");
-					System.out.println("영화 좌석을 선택해주세요.");
-					System.out.println("원하는 좌석 행을 선택해주세요. A-Z 순으로 번호를 입력해주세요. ex) A=1, B=2, C=3");
+					System.out.print("영화 좌석을 선택해주세요.\n");
+					System.out.print("원하는 좌석 행을 선택해주세요. A-Z 순으로 번호를 입력해주세요. ex) A=1, B=2, C=3");
 					
 					int row=sc.nextInt();
-					String row2 = moviearrays.get(row-1);
+					String row2 = seatarrays.get(row-1);
 					
 					char alphabet = row2.charAt(0);
 					System.out.println(alphabet+"행을 선택하셨습니다.");
@@ -464,9 +467,11 @@ class Member extends AbstractMenu
 					
 					int column = sc.nextInt();
 					char column2 = row2.charAt(column*3-1);
+					
+					System.out.println(column2+"열을 선택하셨습니다.");
 					String seatnumber=alphabet+"-"+column2;
 					
-					bwreserve.write(place+", "+System.currentTimeMillis()+", "+row2+", "+seatnumber);
+					bwreserve.write(place+", "+System.currentTimeMillis()+", "+movienum+", "+seatnumber);
 					bwreserve.newLine();
 					System.out.println("영화예매를 종료합니다.");
 				}
