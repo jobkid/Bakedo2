@@ -16,8 +16,7 @@ public class MovieMain{
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		//Manager manager = new Manager();
-		//manager.managerMenu();
+		
 		login();
 	}
 	
@@ -329,6 +328,8 @@ class Member extends AbstractMenu{
 	File filereservations = new File("src/project/reservation.txt");
 	File filelogindata = new File("src/project/logindata.txt");
 	File fileseat = new File("src/project/theaterseat.txt");
+	
+	
 
 	ArrayList<String> moviearrays=new ArrayList<String>();
 	ArrayList<String> reservearrays = new ArrayList<String>();
@@ -344,7 +345,7 @@ class Member extends AbstractMenu{
 	
 	void memberMenu() throws IOException
 	{
-		System.out.println("메뉴를 선택해주세요. [1] 영화예매 [2] 예매 현황 [3] 예매 취소 [4] 메뉴로 돌아가기");
+		System.out.println("메뉴를 선택해주세요. [1] 영화예매 [2] 예매 현황 [3] 예매 추가 [4] 예매삭제 [5] 메뉴돌아가기");
 		int selectnum=sc.nextInt();
 		switch(selectnum)
 			{
@@ -352,18 +353,25 @@ class Member extends AbstractMenu{
 				getReservation();
 				break;
 			}
-			case 2:{
+			case 2:
+			{
 				seeReservation();
 				break;
 			}
 			case 3:
 			{
-				delReservation();
-				break;
+				addReservation();
 			}
 			case 4:
 			{
+				delReservation();
+				break;
+			}
+			
+			case 5:
+			{
 				MovieMain.login();
+				System.out.println("무비로 돌아갑니다.");
 				break;
 			}
 		}
@@ -464,13 +472,76 @@ class Member extends AbstractMenu{
 		setReservation();
 	}
 	
+	void addReservation() throws IOException
+	{
+		System.out.println("추가 예매를 하시겠습니까? 예[1] 아니오[2]");
+		FileWriter fwreserve = new FileWriter(filereservations, true);
+		BufferedWriter bwreserve = new BufferedWriter(fwreserve);
+		int i=0;
+		int j=0;
+		String data=null;
+		Scanner reserve = new Scanner(System.in);
+		int	reserve2=reserve.nextInt();
+		if(reserve2==1)
+		{
+			do{
+				System.out.println("장소를 선택해주세요. 띄어쓰기는 하지 말아주세요.");
+				System.out.println("==================================");
+				
+				String place=sc.nextLine();
+				
+				for(i=0; i<moviearrays.size(); i++)
+				{
+					System.out.println("["+(i+1)+"번]"+moviearrays.get(i));
+				}
+				int purchase=sc.nextInt();
+				String movienum=moviearrays.get(purchase-1);
+				System.out.println("["+purchase+"번 영화를 선택했습니다. \n=====================");
+				
+				FileReader frseat = new FileReader(fileseat);
+				BufferedReader brseat = new BufferedReader(frseat);
+				
+				while((data=brseat.readLine())!=null)
+				{
+					seatarrays.add(data);
+					System.out.println(data);
+				}
+				System.out.println("==================스크린=================");
+				System.out.println("원하는 좌석행을 선택해주세요. A-Z순으로 번호를 입력해주세요.");
+				
+				int row=sc.nextInt();
+				String row2=seatarrays.get(row-1);
+				char alphabet=row2.charAt(0);
+				System.out.println(alphabet+"행을 선택하셨습니다.");
+				System.out.println("원하시는 열을 선택해주세요.");
+				
+				int column=sc.nextInt();
+				char column2=row2.charAt(3*column-1);
+				String seatnumber=alphabet+"-"+column2;
+				
+				bwreserve.write(place+", "+System.currentTimeMillis()+", "+movienum+seatnumber);
+				bwreserve.newLine();
+				System.out.println("영화예매를 종료합니다.");
+				
+			}while((j++)<moviearrays.size());
+			bwreserve.close();
+			fwreserve.close();
+		}
+		else if(reserve2==2)
+		{
+			System.out.println("메뉴로 돌아갑니다.");
+			memberMenu();
+		}
+		
+	}
+	
 	void delReservation() throws IOException
 	{
 		FileReader frreservations = new FileReader(filereservations);
 		BufferedReader brreservations = new BufferedReader(frreservations);
 		
 		int i=0;
-		System.out.println("취소할 영화를 선택해주세요.\n=================");
+		System.out.println("취소할 예매를 선택해주세요.\n=================");
 		
 		while((data=brreservations.readLine())!=null)
 		{
@@ -480,7 +551,7 @@ class Member extends AbstractMenu{
 		
 		int delnumber=sc.nextInt();
 		reservearrays.remove(delnumber-1);
-		System.out.println("영화를 삭제했습니다.");
+		System.out.println("예매를 취소했습니다.");
 		
 		
 		FileWriter fwreserve = new FileWriter(filereservations);
@@ -518,38 +589,32 @@ class Member extends AbstractMenu{
 		int yn;
 		String mname=null;
 		String mpass=null;
-		boolean tf=true;
+		boolean memberid=true;
 		String buf=null;
 		String[] member= {};
 		try {
-			FileWriter fwlogindata = new FileWriter(filelogindata);
-			BufferedWriter bwlogindata = new BufferedWriter(fwlogindata);
 			
 			System.out.println("비회원이면 [1] 회원이면 [2]를 입력해주세요.");
 			yn=sc.nextInt();
 			
-				if(yn==1)
+				if(yn==1&&!filelogindata.exists())
 				{
-					System.out.println("회원가입을 진행합니다.");
-						
+					FileWriter fwlogindata = new FileWriter(filelogindata);
+					BufferedWriter bwlogindata = new BufferedWriter(fwlogindata);
+					System.out.println("회원가입을 진행합니다.\n이름을 입력하세요.");
 					
-					System.out.println("회원정보를 입력해주세요.");
-					System.out.println("이름을 입력해주세요.");
-					mname=sc.next();
-							
-					System.out.println("비밀번호를 입력해주세요.");
-					mpass=sc.next();
-							
-					String information = mname+", "+mpass+", ";
-					bwlogindata.write(information);
+					bwlogindata.write(register());
 					bwlogindata.newLine();
 							
 					bwlogindata.close();
 					fwlogindata.close();
+					System.out.println("회원가입을 했습니다.");
+					memberMenu();
 						
 				}
-				else if(yn==2)
-					{
+				else if(yn==2&&filelogindata.exists())
+				{
+				
 						System.out.println("=====로그인 화면으로 이동합니다.=====");
 						FileReader frlogindata = new FileReader(filelogindata);
 						BufferedReader brlogindata = new BufferedReader(frlogindata);
@@ -561,24 +626,22 @@ class Member extends AbstractMenu{
 							if(mname.equals(member[0])&&mpass.equals(member[2]))
 							{
 								System.out.println("\n"+"♥♥♥"+mname+"님 환영d니다."+"♥♥♥");
-								tf=false;
+								memberid=false;
 							}
-							if(tf!=false)
+							if(memberid!=false)
 							{
-								System.out.println("회원 정보가 일치하지 않습니다.");
+								System.out.println("회원 정보가 일치하지 않습니다. 회원 정보를 다시 입력하세요.");
 							}
 						}
-										
-					
-						
-						System.out.println("메뉴로 이동합니다.");
 						memberMenu();
-					}
-							
-				else
-				{
-					System.out.println("정확한 숫자를 입력하세요.");
 				}
+				else 
+				{
+					System.out.println("회원가입을 진행해주세요. 로그인 및 회원가입 메뉴로 이동합니다.");
+					register();
+				}						
+					
+
 		}catch(IOException e)
 		{
 			e.printStackTrace();
@@ -589,6 +652,7 @@ class Member extends AbstractMenu{
 	
 	static String register()
 	{
+		String information=null;
 		String name;
 		String phone;
 		String password;
@@ -603,15 +667,10 @@ class Member extends AbstractMenu{
 		System.out.println("비밀번호를 입력하세요.(숫자만)");
 		password = sc.nextLine();
 		
-		return name+" "+ " "+phone+" "+"\n";
-		
-		
+		return information= name+" "+password+" "+phone;
 	}
 	
 }
-	
-	
-
 
 interface Menu{
 	public abstract void login();
