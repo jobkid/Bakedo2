@@ -18,12 +18,12 @@ public class MovieMain{
 		// TODO Auto-generated method stub
 		
 		login();
-		Member nice=new Member();
+		//Member nice=new Member();
 		//nice.addReservation();
-		int i;
+		//int i;
 		//Manager admin = new Manager();
 		
-		System.out.println(nice.moviearrays.get(0)); 
+		//System.out.println(nice.moviearrays.get(0)); 
 		
 	}
 	
@@ -511,6 +511,8 @@ class Member extends AbstractMenu{
 					int selection2 = sc.nextInt();
 					if(selection==1)
 					{
+						
+						
 						System.out.print("장소를 선택해주세요. 띄어쓰기는 하지 말아주세요.→");
 						String place=sc.next();
 						
